@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Adoption Stories - PAWtners</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Chunko';
+            src: url('chunko-bold-demo.regular.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --orange: #f36e23;
+            --yellow: #f5de65;
+            --cream: #f0e2d4;
+            --teal: #91d4d5;
+            --dark-teal: #043034;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--dark-teal);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--orange);
+            top: -150px;
+            right: -150px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--teal);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .orb-3 {
+            width: 450px;
+            height: 450px;
+            background: var(--yellow);
+            top: 40%;
+            right: 5%;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 100px 50px 120px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        header h1 {
+            font-family: 'Chunko', 'Playfair Display', serif;
+            font-size: 96px;
+            font-weight: bold;
+            color: var(--dark-teal);
+            margin-bottom: 0;
+            letter-spacing: -3px;
+            line-height: 0.9;
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 50px;
+            margin-bottom: 100px;
+        }
+
+        /* Polaroid Card Styles */
+        .polaroid-card {
+            background: white;
+            padding: 20px 20px 25px;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(4, 48, 52, 0.12);
+            transition: all 0.4s ease;
+            animation: popIn 0.6s ease-out;
+            transform: rotate(-1deg);
+        }
+
+        .polaroid-card.new {
+            animation: popInBig 0.8s ease-out;
+        }
+
+        .polaroid-card:nth-child(even) {
+            transform: rotate(1deg);
+        }
+
+        .polaroid-card:nth-child(3n) {
+            transform: rotate(-0.5deg);
+        }
+
+        .polaroid-card:hover {
+            transform: rotate(0deg) translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(4, 48, 52, 0.2);
+            z-index: 10;
+        }
+
+        /* Photo Area */
+        .polaroid-photo {
+            width: 100%;
+            height: 280px;
+            background: var(--cream);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .polaroid-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* No Photo - Text Display */
+        .polaroid-photo.no-image {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--cream) 0%, #e8d5c4 100%);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .no-image-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        .no-image-names {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--dark-teal);
+            line-height: 1.3;
+        }
+
+        .no-image-pet {
+            font-size: 20px;
+            color: var(--teal);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* Caption Area (Quote) */
+        .polaroid-caption {
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        .quote-marks {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            color: var(--orange);
+            opacity: 0.3;
+            line-height: 0.5;
+            margin-bottom: 10px;
+        }
+
+        .polaroid-quote {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--dark-teal);
+            margin-bottom: 15px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .polaroid-attribution {
+            font-size: 13px;
+            color: var(--dark-teal);
+            opacity: 0.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .attribution-name {
+            font-weight: 600;
+        }
+
+        .attribution-pet {
+            font-weight: 500;
+            color: var(--teal);
+        }
+
+        .polaroid-date {
+            font-size: 11px;
+            color: var(--dark-teal);
+            opacity: 0.3;
+            text-align: center;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px) rotate(-1deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0) rotate(-1deg);
+            }
+        }
+
+        @keyframes popInBig {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px) rotate(0deg);
+            }
+            60% {
+                transform: scale(1.05) translateY(-5px) rotate(-2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0) rotate(-1deg);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 100px 40px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(4, 48, 52, 0.06);
+            border: 2px dashed rgba(4, 48, 52, 0.15);
+        }
+
+        .empty-state .icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            opacity: 0.2;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark-teal);
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: var(--dark-teal);
+            opacity: 0.5;
+            line-height: 1.6;
+        }
+
+        .live-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            color: var(--dark-teal);
+            box-shadow: 0 8px 25px rgba(4, 48, 52, 0.1);
+            border: 2px solid rgba(4, 48, 52, 0.05);
+            font-weight: 600;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.4;
+                transform: scale(1.3);
+            }
+        }
+
+        .qr-prompt {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark-teal);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 50px;
+            box-shadow: 0 12px 40px rgba(4, 48, 52, 0.25);
+            text-align: center;
+            z-index: 100;
+            animation: bounce 2.5s ease-in-out infinite;
+        }
+
+        .qr-prompt p {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-6px);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                padding: 80px 35px 100px;
+            }
+
+            header {
+                margin-bottom: 60px;
+            }
+
+            header h1 {
+                font-size: 72px;
+            }
+
+            .stories-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 60px 25px 90px;
+            }
+
+            header {
+                margin-bottom: 50px;
+            }
+
+            header h1 {
+                font-size: 56px;
+                letter-spacing: -2px;
+            }
+
+            .stories-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .polaroid-photo {
+                height: 240px;
+            }
+
+            .polaroid-quote {
+                font-size: 14px;
+            }
+
+            .qr-prompt {
+                bottom: 20px;
+                padding: 14px 28px;
+            }
+
+            .qr-prompt p {
+                font-size: 13px;
+            }
+
+            .live-indicator {
+                top: 20px;
+                right: 20px;
+                font-size: 11px;
+                padding: 8px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 44px;
+            }
+
+            .polaroid-card {
+                padding: 16px 16px 20px;
+            }
+
+            .polaroid-photo {
+                height: 220px;
+            }
+
+            .no-image-names {
+                font-size: 22px;
+            }
+
+            .no-image-pet {
+                font-size: 18px;
+            }
+
+            .empty-state {
+                padding: 70px 30px;
+            }
+
+            .empty-state .icon {
+                font-size: 56px;
+            }
+
+            .empty-state h3 {
+                font-size: 26px;
+            }
+
+            .empty-state p {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+
+    <div class="live-indicator">
+        <div class="live-dot"></div>
+        <span>Live</span>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Adoption Stories</h1>
+        </header>
+
+        <div id="storiesGrid" class="stories-grid">
+            <!-- Polaroid cards will appear here -->
+        </div>
+
+        <div id="emptyState" class="empty-state">
+            <div class="icon">📝</div>
+            <h3>Waiting for Stories</h3>
+            <p>Scan the QR code to share your adoption journey</p>
+        </div>
+    </div>
+
+    <div class="qr-prompt">
+        <p>📱 Scan to Share Your Story</p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcQM4rJHSdvIJDgtw2XsA88rHz5MQCiF8",
+            authDomain: "pawtners-stories.firebaseapp.com",
+            databaseURL: "https://pawtners-stories-default-rtdb.firebaseio.com",
+            projectId: "pawtners-stories",
+            storageBucket: "pawtners-stories.firebasestorage.app",
+            messagingSenderId: "188046259694",
+            appId: "1:188046259694:web:2c9663097851b852f94aff"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        const storiesGrid = document.getElementById('storiesGrid');
+        const emptyState = document.getElementById('emptyState');
+
+        let displayedStories = new Set();
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        const storiesRef = ref(database, 'stories');
+        
+        onValue(storiesRef, (snapshot) => {
+            const data = snapshot.val();
+            
+            if (!data) {
+                storiesGrid.innerHTML = '';
+                emptyState.style.display = 'block';
+                displayedStories.clear();
+                return;
+            }
+
+            const stories = Object.keys(data).map(key => ({
+                key: key,
+                ...data[key]
+            }));
+
+            emptyState.style.display = 'none';
+
+            stories.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            const currentKeys = new Set(stories.map(s => s.key));
+            const newStories = stories.filter(s => !displayedStories.has(s.key));
+
+            displayedStories = currentKeys;
+            storiesGrid.innerHTML = '';
+
+            stories.forEach(story => {
+                const isNew = newStories.some(ns => ns.key === story.key);
+                const card = document.createElement('div');
+                card.className = 'polaroid-card' + (isNew ? ' new' : '');
+                
+                const date = new Date(story.timestamp);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+
+                // Photo or text display
+                const photoHTML = story.image 
+                    ? `<div class="polaroid-photo">
+                         <img src="${story.image}" alt="${escapeHtml(story.petName)}">
+                       </div>`
+                    : `<div class="polaroid-photo no-image">
+                         <div class="no-image-icon">🐾</div>
+                         <div class="no-image-names">${escapeHtml(story.yourName)}</div>
+                         <div class="no-image-pet">${escapeHtml(story.petName)}</div>
+                       </div>`;
+                
+                card.innerHTML = `
+                    ${photoHTML}
+                    <div class="polaroid-caption">
+                        <div class="quote-marks">"</div>
+                        <p class="polaroid-quote">${escapeHtml(story.story)}</p>
+                        <div class="polaroid-attribution">
+                            <span class="attribution-name">${escapeHtml(story.yourName)}</span>
+                            <span>•</span>
+                            <span class="attribution-pet">${escapeHtml(story.petName)}</span>
+                        </div>
+                        <div class="polaroid-date">${formattedDate}</div>
+                    </div>
+                `;
+                
+                storiesGrid.appendChild(card);
+            });
+
+        }, (error) => {
+            console.error('Firebase error:', error);
+        });
+    </script>
+</body>
+</html>
