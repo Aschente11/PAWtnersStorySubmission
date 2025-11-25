@@ -8,6 +8,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Chunko';
+            src: url('chunko-bold-demo.regular.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -31,16 +38,34 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
             position: relative;
             overflow-x: hidden;
+        }
+
+        .logo {
+            position: fixed;
+            top: 35px;
+            left: 50px;
+            z-index: 100;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo img {
+            height: 80px;
+            width: auto;
+        }
+
+        .logo:hover {
+            opacity: 1;
         }
 
         .gradient-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.2;
+            filter: blur(120px);
+            opacity: 0.08;
             pointer-events: none;
             z-index: 0;
         }
@@ -62,7 +87,7 @@
         }
 
         .container {
-            max-width: 700px;
+            max-width: 650px;
             width: 100%;
             position: relative;
             z-index: 1;
@@ -70,69 +95,55 @@
 
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 52px;
-            font-weight: 800;
+            font-family: 'Chunko', 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: bold;
             color: var(--dark-teal);
-            margin-bottom: 12px;
-            letter-spacing: -1.5px;
-            line-height: 1.1;
+            margin-bottom: 0;
+            letter-spacing: -2px;
+            line-height: 0.9;
         }
 
-        header p {
-            font-size: 17px;
-            color: var(--dark-teal);
-            opacity: 0.6;
-            font-weight: 400;
-        }
-
-        .submit-section {
+        /* Polaroid Form Card */
+        .polaroid-form {
             background: white;
-            border-radius: 30px;
-            padding: 50px;
-            box-shadow: 0 20px 60px rgba(4, 48, 52, 0.08);
+            padding: 25px 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(4, 48, 52, 0.12);
+            transform: rotate(-0.5deg);
+            transition: all 0.3s ease;
         }
 
+        .polaroid-form:hover {
+            transform: rotate(0deg);
+            box-shadow: 0 12px 40px rgba(4, 48, 52, 0.15);
+        }
+
+        /* Image Upload Section - Polaroid Photo Style */
         .image-upload-section {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .upload-label {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--dark-teal);
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            margin-bottom: 25px;
         }
 
         .image-upload-wrapper {
             position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px dashed rgba(4, 48, 52, 0.2);
+            width: 100%;
+            height: 320px;
+            background: var(--cream);
             cursor: pointer;
             transition: all 0.3s ease;
-            background: var(--cream);
+            overflow: hidden;
         }
 
         .image-upload-wrapper:hover {
-            border-color: var(--teal);
-            transform: scale(1.02);
+            background: #e8d5c4;
         }
 
         .image-upload-wrapper.has-image {
-            border-style: solid;
-            border-color: var(--teal);
+            background: transparent;
         }
 
         .upload-placeholder {
@@ -142,18 +153,20 @@
             transform: translate(-50%, -50%);
             text-align: center;
             pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
         .upload-placeholder-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-            opacity: 0.3;
+            font-size: 56px;
+            margin-bottom: 15px;
+            opacity: 0.2;
         }
 
         .upload-placeholder-text {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--dark-teal);
-            opacity: 0.5;
+            opacity: 0.4;
+            font-weight: 500;
         }
 
         #imagePreview {
@@ -173,21 +186,22 @@
 
         .remove-image-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 32px;
-            height: 32px;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: var(--orange);
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 20px;
             display: none;
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
             z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .remove-image-btn.show {
@@ -199,27 +213,33 @@
             transform: scale(1.1);
         }
 
+        /* Form Caption Area */
+        .form-caption {
+            padding: 5px 10px 0;
+        }
+
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--dark-teal);
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            opacity: 0.6;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 16px 20px;
-            border: 2px solid rgba(4, 48, 52, 0.1);
-            border-radius: 15px;
-            font-size: 16px;
+            padding: 14px 16px;
+            border: 2px solid rgba(4, 48, 52, 0.08);
+            border-radius: 8px;
+            font-size: 15px;
             font-family: 'Inter', sans-serif;
             color: var(--dark-teal);
             transition: all 0.3s ease;
@@ -234,42 +254,43 @@
         }
 
         .form-group textarea {
-            min-height: 140px;
+            min-height: 120px;
             resize: vertical;
-            line-height: 1.7;
+            line-height: 1.6;
+            font-style: italic;
         }
 
         .char-count {
             text-align: right;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--dark-teal);
-            opacity: 0.4;
-            margin-top: 8px;
+            opacity: 0.3;
+            margin-top: 6px;
             font-weight: 500;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 18px 40px;
+            padding: 16px 40px;
             background: var(--dark-teal);
             color: white;
             border: 2px solid var(--dark-teal);
             border-radius: 50px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 15px;
+            letter-spacing: 1.5px;
+            margin-top: 20px;
         }
 
         .submit-btn:hover:not(:disabled) {
             background: var(--orange);
             border-color: var(--orange);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(243, 110, 35, 0.3);
+            box-shadow: 0 6px 20px rgba(243, 110, 35, 0.3);
         }
 
         .submit-btn:active {
@@ -284,13 +305,14 @@
 
         .success-message {
             display: none;
-            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-            color: white;
+            background: white;
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 8px;
             text-align: center;
-            margin-top: 25px;
+            margin-top: 30px;
             animation: slideIn 0.5s ease-out;
+            box-shadow: 0 8px 30px rgba(4, 48, 52, 0.12);
+            border: 3px solid var(--teal);
         }
 
         .success-message.show {
@@ -299,33 +321,37 @@
 
         .success-message .icon {
             font-size: 56px;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .success-message strong {
             display: block;
-            font-size: 22px;
-            margin-bottom: 8px;
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 10px;
             font-weight: 700;
+            color: var(--dark-teal);
         }
 
         .success-message p {
             font-size: 15px;
-            opacity: 0.95;
+            opacity: 0.7;
             margin: 0;
+            color: var(--dark-teal);
         }
 
         .error-message {
             display: none;
-            background: #fee;
+            background: white;
             color: #c41e3a;
-            padding: 18px;
-            border-radius: 12px;
+            padding: 20px;
+            border-radius: 8px;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 14px;
             font-weight: 500;
-            border: 2px solid #fcc;
+            border: 3px solid #fcc;
+            box-shadow: 0 8px 30px rgba(196, 30, 58, 0.1);
         }
 
         .error-message.show {
@@ -345,63 +371,86 @@
 
         footer {
             text-align: center;
-            margin-top: 30px;
-            font-size: 13px;
+            margin-top: 35px;
+            font-size: 12px;
             color: var(--dark-teal);
-            opacity: 0.5;
+            opacity: 0.4;
+        }
+
+        .view-stories-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 14px 32px;
+            background: transparent;
+            color: var(--dark-teal);
+            border: 2px solid var(--dark-teal);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-decoration: none;
+        }
+
+        .view-stories-btn:hover {
+            background: var(--dark-teal);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(4, 48, 52, 0.2);
+        }
+
+        .view-stories-btn:active {
+            transform: translateY(0);
         }
 
         @media (max-width: 768px) {
             body {
-                padding: 30px 15px;
+                padding: 40px 20px;
             }
 
             header h1 {
-                font-size: 40px;
+                font-size: 56px;
+                letter-spacing: -1.5px;
             }
 
-            header p {
-                font-size: 15px;
-            }
-
-            .submit-section {
-                padding: 35px 25px;
-                border-radius: 25px;
+            .polaroid-form {
+                padding: 20px 20px 25px;
             }
 
             .image-upload-wrapper {
-                width: 160px;
-                height: 160px;
+                height: 280px;
             }
 
             .form-group input,
             .form-group textarea {
-                padding: 14px 18px;
-                font-size: 15px;
+                padding: 12px 14px;
+                font-size: 14px;
             }
 
             .submit-btn {
-                padding: 16px 36px;
-                font-size: 13px;
+                padding: 14px 36px;
+                font-size: 12px;
             }
         }
 
         @media (max-width: 480px) {
             header h1 {
-                font-size: 34px;
+                font-size: 44px;
             }
 
-            .submit-section {
-                padding: 30px 20px;
+            .polaroid-form {
+                padding: 18px 18px 22px;
             }
 
             .image-upload-wrapper {
-                width: 140px;
-                height: 140px;
+                height: 240px;
             }
 
             .upload-placeholder-icon {
-                font-size: 40px;
+                font-size: 48px;
             }
         }
     </style>
@@ -410,60 +459,70 @@
     <div class="gradient-orb orb-1"></div>
     <div class="gradient-orb orb-2"></div>
 
+    <!-- Logo -->
+    <div class="logo">
+        <img src="logo-heart.svg" alt="PAWtners">
+    </div>
+
     <div class="container">
         <header>
             <h1>Share Your Story</h1>
-            <p>Tell us about your rescue journey 🐾</p>
         </header>
 
-        <div class="submit-section">
+        <div class="polaroid-form">
             <form id="storyForm">
-                <!-- Image Upload Section -->
+                <!-- Polaroid Photo Area -->
                 <div class="image-upload-section">
-                    <label class="upload-label">Add a Photo (Optional)</label>
                     <div class="image-upload-wrapper" id="uploadWrapper">
                         <input type="file" id="imageInput" accept="image/*">
                         <img id="imagePreview" alt="Preview">
                         <div class="upload-placeholder" id="uploadPlaceholder">
                             <div class="upload-placeholder-icon">📷</div>
-                            <div class="upload-placeholder-text">Click to upload</div>
+                            <div class="upload-placeholder-text">Click to add photo</div>
                         </div>
                         <button type="button" class="remove-image-btn" id="removeImageBtn">×</button>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="yourName">Your Name *</label>
-                    <input type="text" id="yourName" required placeholder="Enter your name" maxlength="50">
-                </div>
-                
-                <div class="form-group">
-                    <label for="petName">Pet's Name *</label>
-                    <input type="text" id="petName" required placeholder="Enter your pet's name" maxlength="50">
-                </div>
-                
-                <div class="form-group">
-                    <label for="story">Your Story *</label>
-                    <textarea id="story" required placeholder="Share your adoption journey... How did you meet? What makes your pet special?" maxlength="500"></textarea>
-                    <div class="char-count">
-                        <span id="charCount">0</span>/500
+                <!-- Polaroid Caption Area -->
+                <div class="form-caption">
+                    <div class="form-group">
+                        <label for="yourName">Your Name *</label>
+                        <input type="text" id="yourName" required placeholder="Your name" maxlength="50">
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="petName">Pet's Name *</label>
+                        <input type="text" id="petName" required placeholder="Pet's name" maxlength="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="story">Your Story *</label>
+                        <textarea id="story" required placeholder="Share your adoption journey..." maxlength="500"></textarea>
+                        <div class="char-count">
+                            <span id="charCount">0</span>/500
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Share Story
+                    </button>
                 </div>
-                
-                <button type="submit" class="submit-btn" id="submitBtn">
-                    Share My Story
-                </button>
             </form>
-            
-            <div class="success-message" id="successMessage">
-                <div class="icon">🎉</div>
-                <strong>Story Shared!</strong>
-                <p>Your story will appear on the wall shortly</p>
-            </div>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <div class="icon">🎉</div>
+            <strong>Story Shared!</strong>
+            <p>Your story will appear on the wall shortly</p>
+        </div>
 
-            <div class="error-message" id="errorMessage">
-                ⚠️ Unable to save story. Please try again.
-            </div>
+        <div class="error-message" id="errorMessage">
+            ⚠️ Unable to save story. Please try again.
+        </div>
+
+        <div style="text-align: center;">
+            <a href="stories.html" class="view-stories-btn">See Stories of Others</a>
         </div>
 
         <footer>
@@ -542,7 +601,7 @@
         storyTextarea.addEventListener('input', () => {
             const length = storyTextarea.value.length;
             charCount.textContent = length;
-            charCount.style.opacity = length >= 450 ? '1' : '0.4';
+            charCount.style.opacity = length >= 450 ? '1' : '0.3';
         });
 
         // Form submission
@@ -581,7 +640,7 @@
                     }
                     successMessage.classList.remove('show');
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Share My Story';
+                    submitBtn.textContent = 'Share Story';
                     submitBtn.style.background = 'var(--dark-teal)';
                     submitBtn.style.borderColor = 'var(--dark-teal)';
                 }, 3000);
@@ -591,7 +650,7 @@
                 errorMessage.textContent = '⚠️ Error: ' + error.message;
                 errorMessage.classList.add('show');
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Share My Story';
+                submitBtn.textContent = 'Share Story';
             }
         });
     </script>

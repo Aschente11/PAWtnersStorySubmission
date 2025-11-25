@@ -207,7 +207,6 @@
         .polaroid-attribution {
             font-size: 13px;
             color: var(--dark-teal);
-            opacity: 0.5;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -216,11 +215,18 @@
 
         .attribution-name {
             font-weight: 600;
+            color: var(--orange);
         }
 
         .attribution-pet {
-            font-weight: 500;
-            color: var(--teal);
+            font-weight: 600;
+            color: var(--orange);
+        }
+
+        .attribution-separator {
+            font-size: 11px;
+            color: var(--orange);
+            opacity: 0.6;
         }
 
         .polaroid-date {
@@ -349,35 +355,81 @@
             }
         }
 
-        .qr-prompt {
+        .logo {
             position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 35px;
+            left: 35px;
+            z-index: 100;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo:hover {
+            opacity: 1;
+        }
+
+        .qr-section {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-code {
+            width: 140px;
+            height: 140px;
+            background: white;
+            padding: 12px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(4, 48, 52, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .qr-code:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(4, 48, 52, 0.2);
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .qr-label {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--dark-teal);
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(4, 48, 52, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .qr-label:hover {
             background: var(--dark-teal);
             color: white;
-            padding: 18px 35px;
-            border-radius: 50px;
-            box-shadow: 0 12px 40px rgba(4, 48, 52, 0.25);
-            text-align: center;
-            z-index: 100;
-            animation: bounce 2.5s ease-in-out infinite;
-        }
-
-        .qr-prompt p {
-            font-size: 15px;
-            font-weight: 600;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            50% {
-                transform: translateX(-50%) translateY(-6px);
-            }
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(4, 48, 52, 0.2);
         }
 
         @media (max-width: 1024px) {
@@ -433,6 +485,31 @@
 
             .qr-prompt p {
                 font-size: 13px;
+            }
+
+            .logo {
+                top: 20px;
+                left: 20px;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+
+            .qr-section {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .qr-code {
+                width: 110px;
+                height: 110px;
+                padding: 10px;
+            }
+
+            .qr-label {
+                font-size: 11px;
+                padding: 8px 16px;
             }
 
             .live-indicator {
@@ -493,6 +570,11 @@
     </div>
 
     <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="logo-heart.svg" alt="PAWtners">
+        </div>
+        
         <header>
             <h1>Adoption Stories</h1>
         </header>
@@ -508,8 +590,12 @@
         </div>
     </div>
 
-    <div class="qr-prompt">
-        <p>📱 Scan to Share Your Story</p>
+    <!-- QR Code Section -->
+    <div class="qr-section">
+        <a href="index.html" class="qr-code">
+            <img src="SubmissionQR.png" alt="QR Code">
+        </a>
+        <a href="submission.html" class="qr-label">Scan/Click to Share Your Story</a>
     </div>
 
     <!-- Firebase SDK -->
@@ -598,7 +684,7 @@
                         <p class="polaroid-quote">${escapeHtml(story.story)}</p>
                         <div class="polaroid-attribution">
                             <span class="attribution-name">${escapeHtml(story.yourName)}</span>
-                            <span>•</span>
+                            <span class="attribution-separator">❤️</span>
                             <span class="attribution-pet">${escapeHtml(story.petName)}</span>
                         </div>
                         <div class="polaroid-date">${formattedDate}</div>
