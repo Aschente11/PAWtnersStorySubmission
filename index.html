@@ -11,7 +11,6 @@
         @font-face {
             font-family: 'Chunko';
             src: url('chunko-bold-demo.regular.otf') format('opentype');
-            font-weight: bold;
             font-style: normal;
         }
 
@@ -44,16 +43,16 @@
         }
 
         .logo {
-            position: fixed;
-            top: 35px;
-            left: 50px;
-            z-index: 100;
+            position: absolute;
+            top: 27px;
+            left: 40px;
+            z-index: 10;
             opacity: 0.9;
             transition: opacity 0.3s ease;
         }
 
         .logo img {
-            height: 80px;
+            height: 120px;
             width: auto;
         }
 
@@ -101,7 +100,6 @@
         header h1 {
             font-family: 'Chunko', 'Playfair Display', serif;
             font-size: 72px;
-            font-weight: bold;
             color: var(--dark-teal);
             margin-bottom: 0;
             letter-spacing: -2px;
